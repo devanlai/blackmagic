@@ -62,7 +62,6 @@
 #define LED_PORT_UART	GPIOC
 #define LED_UART	GPIO14
 
-#define PLATFORM_HAS_TRACESWO	1
 #define NUM_TRACE_PACKETS		(128)		/* This is an 8K buffer */
 
 # define SWD_CR   GPIO_CRH(SWDIO_PORT)
@@ -99,8 +98,23 @@
 #define IRQ_PRI_USB		(2 << 4)
 #define IRQ_PRI_USBUSART	(1 << 4)
 #define IRQ_PRI_USBUSART_TIM	(3 << 4)
+#define IRQ_PRI_GDBUSART (1 << 4)
 #define IRQ_PRI_USB_VBUS	(14 << 4)
 #define IRQ_PRI_SWO_DMA		(0 << 4)
+
+#define GDBUSART USART3
+#define GDBUSART_BAUDRATE 115200
+#define GDBUSART_CR1 USART3_CR1
+#define GDBUSART_IRQ NVIC_USART3_IRQ
+#define GDBUSART_CLK RCC_USART3
+#define GDBUSART_PORT GPIOB
+#define GDBUSART_TX_PIN GPIO10
+#define GDBUSART_ISR usart3_isr
+
+#define GDBUART_PIN_SETUP() do { \
+	gpio_set_mode(GDBUSART_PORT, GPIO_MODE_OUTPUT_2_MHZ, \
+	              GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GDBUSART_TX_PIN); \
+} while (0)
 
 #define USBUSART USART1
 #define USBUSART_CR1 USART1_CR1

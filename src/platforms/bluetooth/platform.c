@@ -24,8 +24,6 @@
  */
 
 #include "general.h"
-#include "cdcacm.h"
-#include "usbuart.h"
 
 #include <libopencm3/stm32/f1/rcc.h>
 #include <libopencm3/cm3/scb.h>
@@ -34,6 +32,9 @@
 #include <libopencm3/stm32/usart.h>
 #include <libopencm3/usb/usbd.h>
 #include <libopencm3/stm32/f1/adc.h>
+
+#include "dfu_stub.h"
+#include "gdb_if.h"
 
 uint32_t led_error_port;
 uint16_t led_error_pin;
@@ -110,11 +111,8 @@ void platform_init(void)
 	SCB_VTOR = (uint32_t)&vector_table;
 
 	platform_timing_init();
-	cdcacm_init();
-	/* Don't enable UART if we're being debugged. */
-	if (!(SCS_DEMCR & SCS_DEMCR_TRCENA))
-		usbuart_init();
-	usbuart_init();
+    dfu_init();
+    gdb_if_init();
 }
 
 void platform_srst_set_val(bool assert)

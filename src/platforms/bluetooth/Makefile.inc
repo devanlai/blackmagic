@@ -19,14 +19,18 @@ else
 LDFLAGS += --specs=nosys.specs
 endif
 
-VPATH += platforms/stm32
+vpath %.h platforms/stm32
+vpath serialno.c platforms/stm32
+vpath timing_stm32.c platforms/stm32
+vpath jtagtap.c platforms/stm32
+vpath serialno.c platforms/stm32
+vpath dfucore.c platforms/stm32
+vpath dfu_f1.c platforms/stm32
 
-SRC += 	cdcacm.c	\
-	usbuart.c 	\
-	serialno.c	\
+SRC += serialno.c	\
+    dfu_stub.c \
 	timing.c	\
 	timing_stm32.c	\
-	traceswoasync.c	\
 	platform_common.c \
 
 all:	blackmagic.bin blackmagic_dfu.bin blackmagic_dfu.hex dfu_upgrade.bin dfu_upgrade.hex
